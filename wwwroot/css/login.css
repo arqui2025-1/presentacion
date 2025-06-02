@@ -1,0 +1,21 @@
+
+.login-container {
+    margin-top: 100px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1.display-4 {
+    color: #32612d;
+    margin-bottom: 20px;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-evenly;
+}

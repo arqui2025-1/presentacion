@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<script>
+    console.log("@ViewBag.Mensaje");
+</script>
+
+<div class="text-center">
+    <div class="container-home">
+        <div class="row vh-100 d-flex">
+            <!-- Sidebar -->
+            <div class="col-md-2 bg-light sidebar pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Home" asp-action="Index">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Productos" asp-action="Index">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Consultas" asp-action="Index">Consultas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Reportes" asp-action="Index">Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" asp-controller="Login" asp-action="Logout">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contenido principal con el h1 -->
+            <div class="col-md-10">
+                @if (ViewBag.Name != null)
+                {
+                    <h1>Bienvenido, @ViewBag.Name!</h1>
+                }
+                <p>Aqui van los datos de los sensores</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam optio laudantium corporis dolorum accusantium adipisci quisquam commodi autem vero, officiis, quos aliquam sed minima minus necessitatibus est quas cupiditate debitis?</p>
+            </div>
+        </div>
+    </div>
+</div>
