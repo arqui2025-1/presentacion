@@ -1,0 +1,131 @@
+@model List<InventoryItem>
+@{
+    ViewData["Title"] = "Marketplace";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 bg-light pt-3 vh-100">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Home" asp-action="Index">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Marketplace" asp-action="Index">Marketplace</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Consultas" asp-action="Index">Consultas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Reportes" asp-action="Index">Reportes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" asp-controller="Login" asp-action="Logout">Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Productos -->
+        <div class="col-md-7 p-4">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Description</p>
+                                <p class="card-text"><strong>Cantidad:</strong> @item.Quantity</p>
+                                <p class="card-text text-success"><strong>Precio:</strong> $@item.Price</p>
+                                <button class="btn btn-primary"
+                                        onclick="agregarAlCarrito('@item.Id', '@item.Name', @item.Quantity, @item.Price)">
+                                    Agregar al carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Carrito -->
+        <div class="col-md-3 border-start p-4">
+            <h4>🛒 Carrito</h4>
+            <div id="carrito" class="mb-2"></div>
+            <button class="btn btn-success" onclick="comprar()">Comprar</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const carrito = [];
+
+    function agregarAlCarrito(id, name, quantity, price) {
+        if (quantity <= 0) {
+            alert("Este producto no tiene unidades disponibles.");
+            return;
+        }
+
+        const existente = carrito.find(item => item.id === id);
+        if (existente) {
+            if (existente.cantidad < quantity) {
+                existente.cantidad += 1;
+            } else {
+                alert("No hay más unidades disponibles de este producto.");
+            }
+        } else {
+            carrito.push({
+                id,
+                name,
+                cantidad: 1,
+                stock: quantity,
+                price
+            });
+        }
+
+        mostrarCarrito();
+    }
+
+    function mostrarCarrito() {
+        const div = document.getElementById("carrito");
+        div.innerHTML = "";
+        if (carrito.length === 0) {
+            div.innerHTML = "<p>El carrito está vacío</p>";
+            return;
+        }
+
+        carrito.forEach(item => {
+            div.innerHTML += `<div>${item.name} x${item.cantidad} - $${item.price * item.cantidad}</div>`;
+        });
+    }
+
+    async function comprar() {
+        for (const item of carrito) {
+            const nuevoStock = item.stock - item.cantidad;
+            await fetch(`http://localhost:8080/api/inventory/${item.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: item.id,
+                    name: item.name,
+                    quantity: nuevoStock,
+                    price: item.price
+                })
+            });
+        }
+
+        alert("Compra realizada");
+        carrito.length = 0;
+        mostrarCarrito();
+    }
+</script>
+}

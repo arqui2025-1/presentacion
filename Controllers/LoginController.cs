@@ -68,8 +68,6 @@ public class LoginController : Controller
 
         var accessToken = tokenData.GetProperty("access_token").GetString();
 
-        ViewBag.Mensaje = $"Token recibido correctamente desde el controlador {accessToken}";
-
         // Guardar en cookies seguras
         Response.Cookies.Append("access_token", accessToken, new CookieOptions
         {

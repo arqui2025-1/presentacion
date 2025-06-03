@@ -3,38 +3,165 @@
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 }
 
 <style>
-  body {
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/20/Wattle_Point_wind_farm.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
+
+    
+    .login-container {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+        padding: 40px;
+        width: 400px;
+        max-width: 90%;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+    
+    .login-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .login-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .login-header h1 {
+        color: #0056b3;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    .login-header p {
+        color: #666;
+        font-size: 16px;
+    }
+    
+    .input-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+    
+    .input-group i {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        color: #0056b3;
+    }
+    
+    .form-control {
+        padding: 12px 12px 12px 45px;
+        border-radius: 50px;
+        border: 2px solid #e1e1e1;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25);
+    }
+    
+    .login-options {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+    
+    .btn {
+        border-radius: 50px;
+        padding: 10px 25px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-primary {
+        background: #0056b3;
+        border: none;
+    }
+    
+    .btn-primary:hover {
+        background: #003c80;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 86, 179, 0.4);
+    }
+    
+    .btn-outline {
+        background: transparent;
+        border: 2px solid #0056b3;
+        color: #0056b3;
+    }
+    
+    .btn-outline:hover {
+        background: #0056b3;
+        color: white;
+    }
+    
+    .wind-icon {
+        color: #0056b3;
+        font-size: 40px;
+        margin-bottom: 15px;
+        animation: spin 10s linear infinite;
+    }
+    
+    @@keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .form-group.text-right {
+        margin-bottom: 20px;
+        text-align: right;
+    }
+
+    .btn i {
+        margin-right: 6px;
+    }
+
+    /* Añadir efecto de pulsación para botones */
+    .btn:active {
+        transform: scale(0.97);
+    }
+
+    /* Mejorar la transición entre estados del formulario */
+    .form-control:focus + i {
+        color: #0069d9;
+    }
+
+    /* Mejorar accesibilidad en el hover de los enlaces */
+    a.text-primary:hover {
+        color: #003c80 !important;
+        text-decoration: underline;
+    }
 </style>
 
-<script>
-    console.log("@ViewBag.Mensaje");
-</script>
-
-
-<div class="text-center">
-    <form asp-action="Login" method="post" class="login-container">
-        <h1 class="display-4">Login</h1>
-        <div class="form-group">
-            <label for="username">Usuario</label>
-            <input type="text" class="form-control" name="username" required />
+<div class="login-container">
+    <div class="login-header">
+        <i class="fas fa-wind wind-icon"></i>
+        <h1 class="display-5">Bienvenido</h1>
+        <p>Ingresa tus credenciales para continuar</p>
+    </div>
+    
+    <form asp-action="Login" method="post">
+        <div class="input-group">
+            <input type="text" class="form-control" name="username" placeholder="Usuario" required />
         </div>
-        <br>
-        <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" class="form-control" name="password" required />
+        
+        <div class="input-group">
+            <input type="password" class="form-control" name="password" placeholder="Contraseña" required />
         </div>
-        <br>
+        
+        <div class="form-group text-right">
+            <a href="#" class="text-primary" style="font-size: 14px;">¿Olvidaste tu contraseña?</a>
+        </div>
+        
         <div class="login-options">
-            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-            <button type="button" class="btn btn-primary">Registrarse</button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt mr-2"></i> Iniciar sesión
+            </button>
+            <a href="@Url.Action("Index", "Register")" class="btn btn-outline">Registrarse</a>
         </div>
     </form>
 </div>

@@ -9,10 +9,66 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Presentacion.styles.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            position: relative;
+        }
+        
+        .container-home {
+            width: 100%;
+        }
+        
+        .auth-page .header-nav {
+            background: transparent !important;
+            position: absolute;
+            width: 100%;
+            z-index: 100;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        .auth-page .footer {
+            background: transparent;
+            border-top: none;
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        .auth-page .footer a {
+            color: #fff;
+        }
+        body.auth-page {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)),
+            url('https://upload.wikimedia.org/wikipedia/commons/2/20/Wattle_Point_wind_farm.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+
+        .main-content {
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
-<body>
+<body class="@(ViewData["Title"]?.ToString() == "Login" ? "auth-page" : "")">
+@if (ViewData["Title"]?.ToString() != "Login")
+{
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 header-nav">
             <div class="container-fluid">
                 <div>
                     <img src="~/images/Agronet.png" alt="Logo" width="12%"/>
@@ -24,10 +80,14 @@
             </div>
         </nav>
     </header>
-    <div class="container-home">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+}
+    
+    <div class="main-content">
+        <div class="container-home">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <footer class="footer">
@@ -35,6 +95,7 @@
             &copy; 2025 - AgroNet - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
