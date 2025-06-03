@@ -1,0 +1,241 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<script>
+    console.log("@ViewBag.Mensaje");
+</script>
+
+<div class="text-center">
+    <div class="container-home">
+        <div class="row vh-100 d-flex">
+            <!-- Sidebar -->
+            <div class="col-md-2 bg-light sidebar pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Home" asp-action="Index">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Marketplace" asp-action="Index">Marketplace</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Consultas" asp-action="Index">Consultas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Reportes" asp-action="Index">Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" asp-controller="Login" asp-action="Logout">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contenido principal con el h1 -->
+            <div class="col-md-10">
+                @if (ViewBag.Name != null)
+                {
+                    <h1>Bienvenido, @ViewBag.Name!</h1>
+                }
+                <p>Aqui van los datos de los sensores</p>
+                <!-- Dashboard de sensores -->
+                <div class="dashboard-container mt-4">
+                    <!-- Tarjetas de resumen -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Temperatura</h5>
+                                    <h2 class="card-text">24.8°C</h2>
+                                    <p><i class="fas fa-arrow-up"></i> 1.2°C vs ayer</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Humedad</h5>
+                                    <h2 class="card-text">58%</h2>
+                                    <p><i class="fas fa-arrow-down"></i> 3% vs ayer</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Presión</h5>
+                                    <h2 class="card-text">1013 hPa</h2>
+                                    <p><i class="fas fa-equals"></i> Sin cambios</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-dark">
+                                <div class="card-body">
+                                    <h5 class="card-title">Velocidad Viento</h5>
+                                    <h2 class="card-text">12 km/h</h2>
+                                    <p><i class="fas fa-arrow-up"></i> 3 km/h vs ayer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráficos -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    Datos históricos (últimas 24h)
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="historicoSensores" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    Distribución de energía
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="distribucionEnergia" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de datos recientes -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <span>Lecturas recientes</span>
+                                    <button class="btn btn-sm btn-primary">Actualizar datos</button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Sensor</th>
+                                                <th>Ubicación</th>
+                                                <th>Última lectura</th>
+                                                <th>Valor</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Sensor-001</td>
+                                                <td>Turbina Norte</td>
+                                                <td>Hoy 10:45</td>
+                                                <td>24.8°C</td>
+                                                <td><span class="badge bg-success">Normal</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sensor-002</td>
+                                                <td>Turbina Este</td>
+                                                <td>Hoy 10:42</td>
+                                                <td>25.2°C</td>
+                                                <td><span class="badge bg-success">Normal</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sensor-003</td>
+                                                <td>Turbina Sur</td>
+                                                <td>Hoy 10:40</td>
+                                                <td>26.7°C</td>
+                                                <td><span class="badge bg-warning">Atención</span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .dashboard-container {
+            padding: 1rem;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            transition: transform 0.3s;
+            margin-bottom: 15px;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+        }
+        .card-header {
+            font-weight: 600;
+            background-color: rgba(0,0,0,0.03);
+        }
+        .table th {
+            border-top: none;
+        }
+    </style>
+}
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico histórico
+            const ctxHistorico = document.getElementById('historicoSensores').getContext('2d');
+            const historicoChart = new Chart(ctxHistorico, {
+                type: 'line',
+                data: {
+                    labels: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '00:00', '02:00', '04:00'],
+                    datasets: [{
+                        label: 'Temperatura (°C)',
+                        data: [22, 23, 25, 27, 28, 27, 25, 24, 23, 22, 21, 20],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }, {
+                        label: 'Velocidad Viento (km/h)',
+                        data: [5, 7, 10, 12, 15, 16, 14, 12, 10, 8, 6, 5],
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        backgroundColor: 'rgba(255, 159, 64, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Gráfico de distribución
+            const ctxDistribucion = document.getElementById('distribucionEnergia').getContext('2d');
+            const distribucionChart = new Chart(ctxDistribucion, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Eólica', 'Solar', 'Hidráulica', 'Otras'],
+                    datasets: [{
+                        label: 'Producción de Energía',
+                        data: [65, 20, 10, 5],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        });
+    </script>
+}
+
